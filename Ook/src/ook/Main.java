@@ -16,7 +16,7 @@ public class Main {
     {
         String text = "";
         String line = "";
-        Console console = System.console();
+        Console console = System.console(); 
         System.out.println("[press EOF to exit, which in UNIX is CTRL-D and in WINDOWS CTRL-Z]");
         
         while ( true )
@@ -50,6 +50,7 @@ public class Main {
         String program = "";
         String line = "";
         Console console = System.console();
+        System.out.printf("Tape Length : %d BYTES\n", Interpreter.DEFAULT_TAPE_LENGTH );
         System.out.println("[press EOF to exit, which in UNIX is CTRL-D and in WINDOWS CTRL-Z]");
         
         while ( true )
@@ -94,9 +95,10 @@ public class Main {
         if ( args.length == 0 )
         {
             System.out.printf("Greetings, Let me presnt you this program:- \n" );
-            System.out.printf("Usage : java -jar ook.jar [lingo] [-e].\n");
+            System.out.printf("Usage : java -jar ook.jar [lingo] [-e] [-s:<size>].\n");
             System.out.printf("lingo : -bf  --> BrainFuck! \n");
             System.out.printf("lingo : -ook --> Ook! \n");
+            System.out.printf("With -s:<size> in the end : SIZE of the TAPE, default is : 1024 BYTES.\n");
             System.out.printf("With -e in the end, ENCODES Homo Sapiens ENGLISH INTO Alianize[BrainFuck] or Pongo[Ook!].\n" );
             System.out.printf("If you are running it now, it is highly probable that you are without any life.\n" );
             System.out.printf("--Noga.\n" );
@@ -105,32 +107,39 @@ public class Main {
         
         
         
-        if ( args.length == 2 && args[1].equalsIgnoreCase("-e"))
+        if ( args.length == 2 )
         {
-            //Instead of decode, encode.
-            if ( args[0].equalsIgnoreCase("-ook")) 
+            if ( args[1].equalsIgnoreCase("-e") )
             {
-                
-            }
-            else if ( args[0].equalsIgnoreCase("-bf") )
-            {
-                encoder = new Encoder(Interpreter.InterpreterLanguage.BRAINFUCK );
-                
-            }
-            Encode(encoder);
-        }
-        else
-        {
-            if ( args[0].equalsIgnoreCase("-ook")) 
-            {
+                //Instead of decode, encode.
+                if ( args[0].equalsIgnoreCase("-ook")) 
+                {
 
+                }
+                else if ( args[0].equalsIgnoreCase("-bf") )
+                {
+                    encoder = new Encoder(Interpreter.InterpreterLanguage.BRAINFUCK );
+
+                }
+                Encode(encoder);
+                return ;
             }
-            else if ( args[0].equalsIgnoreCase("-bf") )
+            else if ( args[1].toLowerCase().startsWith("-s:") )
             {
-                interpreter = new Interpreter(Interpreter.InterpreterLanguage.BRAINFUCK);
+                String[] arr = args[1].split(":");
+                Interpreter.DEFAULT_TAPE_LENGTH = Integer.parseInt(arr[1]);
             }
-            Decode(interpreter);
         }
+        
+        if ( args[0].equalsIgnoreCase("-ook")) 
+        {
+
+        }
+        else if ( args[0].equalsIgnoreCase("-bf") )
+        {
+            interpreter = new Interpreter(Interpreter.InterpreterLanguage.BRAINFUCK);
+        }
+        Decode(interpreter);
         
         
         System.out.printf("{It is Highly probable that you are without any life.\n" );
