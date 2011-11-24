@@ -78,12 +78,27 @@ public class Main {
         }
         interpreter.interpreteAndRun(program);
         //interpreter.interpreteAndRun(helloWorld_OOK);
+        System.out.printf("\n{It is Highly probable that you are without any life.\n" );
+        System.out.printf("--Noga.}\n" );
     }
     
     
     static final String helloWorld_BF="++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.";
     static final String helloWorld_OOK= Interpreter.compileFromBF_2_OOK(helloWorld_BF);
-        
+       
+    
+    static void usage()
+    {
+        System.out.printf("Greetings, Let me present you this program:- \n" );
+        System.out.printf("Usage : java -jar ook.jar [lingo] [-e] [-s:<size>].\n");
+        System.out.printf("lingo : -bf  --> BrainFuck! \n");
+        System.out.printf("lingo : -ook --> Ook! \n");
+        System.out.printf("With -s:<size> in the end : SIZE of the TAPE, default is : 1024 BYTES.\n");
+        System.out.printf("With -e in the end, ENCODES Homo Sapiens ENGLISH INTO Alianize[BrainFuck] or Pongo[Ook!].\n" );
+        System.out.printf("If you are running it now, it is highly probable that you are without any life.\n" );
+        System.out.printf("--Noga.\n" );
+        System.exit(23);
+    }
     /**
      * @param args the command line arguments
      */
@@ -92,21 +107,12 @@ public class Main {
         
         Interpreter interpreter = new Interpreter(Interpreter.InterpreterLanguage.OOK);
         Encoder encoder = new Encoder(Interpreter.InterpreterLanguage.OOK );
-        if ( args.length == 0 )
+        
+        if ( args.length > 0 && args[args.length-1].toLowerCase().startsWith("-s:") )
         {
-            System.out.printf("Greetings, Let me presnt you this program:- \n" );
-            System.out.printf("Usage : java -jar ook.jar [lingo] [-e] [-s:<size>].\n");
-            System.out.printf("lingo : -bf  --> BrainFuck! \n");
-            System.out.printf("lingo : -ook --> Ook! \n");
-            System.out.printf("With -s:<size> in the end : SIZE of the TAPE, default is : 1024 BYTES.\n");
-            System.out.printf("With -e in the end, ENCODES Homo Sapiens ENGLISH INTO Alianize[BrainFuck] or Pongo[Ook!].\n" );
-            System.out.printf("If you are running it now, it is highly probable that you are without any life.\n" );
-            System.out.printf("--Noga.\n" );
-            System.exit(23);
+            String[] arr = args[args.length-1].split(":");
+            Interpreter.DEFAULT_TAPE_LENGTH = Integer.parseInt(arr[1]);
         }
-        
-        
-        
         if ( args.length == 2 )
         {
             if ( args[1].equalsIgnoreCase("-e") )
@@ -122,27 +128,25 @@ public class Main {
 
                 }
                 Encode(encoder);
-                return ;
             }
-            else if ( args[1].toLowerCase().startsWith("-s:") )
+            
+        }
+        else if ( args.length == 1 )
+        {
+            if ( args[0].equalsIgnoreCase("-ook")) 
             {
-                String[] arr = args[1].split(":");
-                Interpreter.DEFAULT_TAPE_LENGTH = Integer.parseInt(arr[1]);
-            }
-        }
-        
-        if ( args[0].equalsIgnoreCase("-ook")) 
-        {
 
+            }
+            else if ( args[0].equalsIgnoreCase("-bf") )
+            {
+                interpreter = new Interpreter(Interpreter.InterpreterLanguage.BRAINFUCK);
+            }
+            Decode(interpreter);
         }
-        else if ( args[0].equalsIgnoreCase("-bf") )
+        else
         {
-            interpreter = new Interpreter(Interpreter.InterpreterLanguage.BRAINFUCK);
+            usage();
         }
-        Decode(interpreter);
         
-        
-        System.out.printf("{It is Highly probable that you are without any life.\n" );
-        System.out.printf("--Noga.}\n" );
     }
 }
